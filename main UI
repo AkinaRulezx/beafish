@@ -1,0 +1,69 @@
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/astraln/SentinelUILIB/main/UI.lua', true))()
+
+local window = Library:Window('Sentinel')
+
+local tab = window:Tab('Home')
+
+tab:Button('Button', function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    -- Noclip function
+    local function noclip()
+        for _, v in pairs(character:GetDescendants()) do
+            if v:IsA("BasePart") and v.CanCollide == true then
+                v.CanCollide = false
+            end
+        end
+    end
+
+    -- Initial noclip
+    noclip()
+
+    -- Check for respawn and reapply noclip every 1 second
+    game:GetService("RunService").Stepped:Connect(function()
+        if player.Character ~= character then
+            character = player.Character
+            noclip()
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55  -- Reapply speed
+        end
+    end)
+
+    while true do
+        wait(1)
+        if player.Character and player.Character:FindFirstChildOfClass('Humanoid') then
+            noclip()
+        end
+    end
+end)
+
+tab:Toggle('Toggle',false, function(t)
+   
+end)
+
+tab:Label("Label")
+
+tab:Keybind("Keybind", Enum.KeyCode.E, function(t)
+   
+end)
+
+local dropdown = tab:Dropdown("Dropdown", {"1", "2",'3','4','5','6','7','8'}, function(item)
+    print(item)
+end)
+
+tab:Button('Refresh', function()
+    dropdown:RefreshDropdown({'69'})
+end)
+
+tab:Slider("Slider", 16, 1000, 16, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    while game.Players.LocalPlayer.Character.Humanoid.WalkSpeed == value do
+        wait(0.001)
+    end
+end)
+
+-- Ensure speed is applied after respawn
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    wait(1)  -- Wait for the character to fully load
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55  -- Default speed after respawn
+end)
