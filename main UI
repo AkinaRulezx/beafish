@@ -1,10 +1,10 @@
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/astraln/SentinelUILIB/main/UI.lua', true))()
 
-local window = Library:Window('Sentinel')
+local window = Library:Window('Be a Fish')
 
-local tab = window:Tab('Home')
+local tab = window:Tab('Main')
 
-tab:Button('Button', function()
+tab:Button('Speed Boost', function()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
 
@@ -20,24 +20,34 @@ tab:Button('Button', function()
     -- Initial noclip
     noclip()
 
-    -- Check for respawn and reapply noclip every 1 second
+    -- Set initial WalkSpeed change if desired
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55
+
+    -- Check for respawn and reapply noclip and WalkSpeed every 0.001 seconds
     game:GetService("RunService").Stepped:Connect(function()
         if player.Character ~= character then
             character = player.Character
             noclip()
             game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55  -- Reapply speed
         end
+        -- Ensure WalkSpeed is set
+        if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= 55 then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55
+        end
     end)
 
     while true do
-        wait(1)
+        wait(0.001)
         if player.Character and player.Character:FindFirstChildOfClass('Humanoid') then
             noclip()
+            if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= 55 then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55
+            end
         end
     end
 end)
 
-tab:Toggle('Toggle',false, function(t)
+tab:Toggle('Noclip',false, function(t)
    
 end)
 
@@ -55,15 +65,7 @@ tab:Button('Refresh', function()
     dropdown:RefreshDropdown({'69'})
 end)
 
-tab:Slider("Slider", 16, 1000, 16, function(value)
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
-    while game.Players.LocalPlayer.Character.Humanoid.WalkSpeed == value do
-        wait(0.001)
-    end
-end)
-
--- Ensure speed is applied after respawn
-game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
-    wait(1)  -- Wait for the character to fully load
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55  -- Default speed after respawn
+-- Original slider as it was the first time
+tab:Slider("Original Slider", 16, 1000, 16, function(value)
+    -- Original slider functionality here
 end)
