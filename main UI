@@ -47,7 +47,7 @@ tab:Button('Speed Boost', function()
     end
 end)
 
-tab:Toggle('Noclip',false, function(t)
+tab:Toggle('Toggle', false, function(t)
    
 end)
 
@@ -57,7 +57,7 @@ tab:Keybind("Keybind", Enum.KeyCode.E, function(t)
    
 end)
 
-local dropdown = tab:Dropdown("Dropdown", {"1", "2",'3','4','5','6','7','8'}, function(item)
+local dropdown = tab:Dropdown("Dropdown", {"1", "2", '3', '4', '5', '6', '7', '8'}, function(item)
     print(item)
 end)
 
@@ -65,7 +65,5 @@ tab:Button('Refresh', function()
     dropdown:RefreshDropdown({'69'})
 end)
 
--- Original slider as it was the first time
 tab:Slider("Original Slider", 16, 1000, 16, function(value)
-    -- Original slider functionality here
 end)
