@@ -2,68 +2,126 @@ local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/astra
 
 local window = Library:Window('Be a Fish')
 
-local tab = window:Tab('Main')
+-- Creating a new tab for Speed Boost
+local speedBoostTab = window:Tab('Speed Boost')
 
-tab:Button('Speed Boost', function()
+-- Speed Boost label
+speedBoostTab:Label("Speed Boost", Color3.fromRGB(255, 255, 255))
+
+-- Slider for adjusting Speed
+speedBoostTab:Slider("Speed", 16, 1000, 55, function(value)
     local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-
-    -- Noclip function
-    local function noclip()
-        for _, v in pairs(character:GetDescendants()) do
-            if v:IsA("BasePart") and v.CanCollide == true then
-                v.CanCollide = false
-            end
-        end
+    if player.Character and player.Character:FindFirstChildOfClass('Humanoid') then
+        player.Character.Humanoid.WalkSpeed = value  -- Set WalkSpeed to the slider value
     end
+end)
 
-    -- Initial noclip
-    noclip()
+-- Label indicating Speed slider behavior
+speedBoostTab:Label("When enabled, speed slider will not work.", Color3.fromRGB(200, 200, 200))
 
-    -- Set initial WalkSpeed change if desired
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55
+-- Speed Boost toggle
+local speedBoostToggle = false
+speedBoostTab:Toggle('Enable Speed Boost', false, function(state)
+    speedBoostToggle = state
+    local player = game.Players.LocalPlayer
+    if speedBoostToggle then
+        local character = player.Character or player.CharacterAdded:Wait()
 
-    -- Check for respawn and reapply noclip and WalkSpeed every 0.001 seconds
-    game:GetService("RunService").Stepped:Connect(function()
-        if player.Character ~= character then
-            character = player.Character
-            noclip()
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55  -- Reapply speed
-        end
-        -- Ensure WalkSpeed is set
-        if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= 55 then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55
-        end
-    end)
+        -- Set initial WalkSpeed change if desired
+        player.Character.Humanoid.WalkSpeed = 55
 
-    while true do
-        wait(0.001)
+        -- Reapply WalkSpeed every 0.001 seconds
+        game:GetService("RunService").Stepped:Connect(function()
+            if not speedBoostToggle then return end
+            if player.Character ~= character then
+                character = player.Character
+                player.Character.Humanoid.WalkSpeed = 55  -- Reapply speed
+            end
+            -- Ensure WalkSpeed is set
+            if player.Character.Humanoid.WalkSpeed ~= 55 then
+                player.Character.Humanoid.WalkSpeed = 55
+            end
+        end)
+    else
         if player.Character and player.Character:FindFirstChildOfClass('Humanoid') then
-            noclip()
-            if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= 55 then
-                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 55
+            player.Character.Humanoid.WalkSpeed = 16  -- Reset to default WalkSpeed
+        end
+    end
+end)
+
+-- Creating another tab for Noclip
+local noclipTab = window:Tab('Noclip')
+
+-- Noclip label
+noclipTab:Label("Noclip", Color3.fromRGB(255, 255, 255))
+
+-- Noclip toggle
+local noclipToggle = false
+noclipTab:Toggle('Enable Noclip', false, function(state)
+    noclipToggle = state
+    if noclipToggle then
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+
+        -- Noclip function
+        local function noclip()
+            for _, v in pairs(character:GetDescendants()) do
+                if v:IsA("BasePart") and v.CanCollide == true then
+                    v.CanCollide = false
+                end
+            end
+        end
+
+        -- Initial noclip
+        noclip()
+
+        -- Reapply noclip every 0.001 seconds
+        game:GetService("RunService").Stepped:Connect(function()
+            if not noclipToggle then return end
+            if player.Character ~= character then
+                character = player.Character
+                noclip()  -- Reapply noclip
+            end
+        end)
+
+        while noclipToggle do
+            wait(0.001)
+            if player.Character and player.Character:FindFirstChildOfClass('Humanoid') then
+                noclip()
+            end
+        end
+    else
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        -- Restore collisions
+        for _, v in pairs(character:GetDescendants()) do
+            if v:IsA("BasePart") and v.CanCollide == false then
+                v.CanCollide = true
             end
         end
     end
 end)
 
-tab:Toggle('Toggle', false, function(t)
-   
+-- Creating a new tab for Others
+local othersTab = window:Tab('Others')
+
+-- Inf Yield button
+othersTab:Button("Inf Yield", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()  -- Load Infinite Yield
 end)
 
-tab:Label("Label")
+-- Creating a new tab for Discord
+local discordTab = window:Tab('Discord')
 
-tab:Keybind("Keybind", Enum.KeyCode.E, function(t)
-   
-end)
+-- Discord label
+discordTab:Label("Join our Discord:", Color3.fromRGB(255, 255, 255))
 
-local dropdown = tab:Dropdown("Dropdown", {"1", "2", '3', '4', '5', '6', '7', '8'}, function(item)
-    print(item)
-end)
-
-tab:Button('Refresh', function()
-    dropdown:RefreshDropdown({'69'})
-end)
-
-tab:Slider("Original Slider", 16, 1000, 16, function(value)
+-- Copy link button
+discordTab:Button("Copy Discord Link", function()
+    setclipboard("https://discord.gg/4Gq4585R7n")  -- Copies the Discord link to the clipboard
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Discord Link Copied",
+        Text = "The Discord link has been copied to your clipboard!",
+        Duration = 2
+    })
 end)
