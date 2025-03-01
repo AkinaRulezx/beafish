@@ -1,5 +1,7 @@
-local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/astraln/SentinelUILIB/main/UI.lua', true))()
+-- Load the UI Library from GitHub
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/AkinaRulezx/AsUI/main/UI', true))()
 
+-- Create a new window titled 'Be a Fish'
 local window = Library:Window('Be a Fish')
 
 -- Creating a new tab for Speed Boost
