@@ -1,5 +1,5 @@
 -- Load the UI Library from GitHub
-local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/AkinaRulezx/AsUI/main/UItesting', true))()
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/AkinaRulezx/AsUI/main/UI', true))()
 
 -- Create a new window titled 'Be a Fish'
 local window = Library:Window('Be a Fish')
