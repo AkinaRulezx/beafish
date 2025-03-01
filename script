@@ -8,6 +8,6 @@ local success, err = pcall(function()
     uiScript()
 end)
 
--- if not success then
+if not success then
     warn("Error loading script: " .. tostring(err))
 end
