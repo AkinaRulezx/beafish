@@ -1,16 +1,11 @@
--- Load the UI Library from GitHub
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/AkinaRulezx/AsUI/main/UI', true))()
 
--- Create a new window titled 'Be a Fish'
 local window = Library:Window('Be a Fish')
 
--- Creating a new tab for Speed Boost
 local speedBoostTab = window:Tab('Speed Boost')
 
--- Speed Boost label
 speedBoostTab:Label("Speed Boost", Color3.fromRGB(255, 255, 255))
 
--- Slider for adjusting Speed
 speedBoostTab:Slider("Speed", 16, 1000, 55, function(value)
     local player = game.Players.LocalPlayer
     if player.Character and player.Character:FindFirstChildOfClass('Humanoid') then
@@ -18,10 +13,8 @@ speedBoostTab:Slider("Speed", 16, 1000, 55, function(value)
     end
 end)
 
--- Label indicating Speed slider behavior
 speedBoostTab:Label("When enabled, speed slider will not work.", Color3.fromRGB(200, 200, 200))
 
--- Speed Boost toggle
 local speedBoostToggle = false
 speedBoostTab:Toggle('Enable Speed Boost', false, function(state)
     speedBoostToggle = state
@@ -32,14 +25,13 @@ speedBoostTab:Toggle('Enable Speed Boost', false, function(state)
         -- Set initial WalkSpeed change if desired
         player.Character.Humanoid.WalkSpeed = 55
 
-        -- Reapply WalkSpeed every 0.001 seconds
         game:GetService("RunService").Stepped:Connect(function()
             if not speedBoostToggle then return end
             if player.Character ~= character then
                 character = player.Character
-                player.Character.Humanoid.WalkSpeed = 55  -- Reapply speed
+                player.Character.Humanoid.WalkSpeed = 55  
             end
-            -- Ensure WalkSpeed is set
+
             if player.Character.Humanoid.WalkSpeed ~= 55 then
                 player.Character.Humanoid.WalkSpeed = 55
             end
@@ -51,13 +43,10 @@ speedBoostTab:Toggle('Enable Speed Boost', false, function(state)
     end
 end)
 
--- Creating another tab for Noclip
 local noclipTab = window:Tab('Noclip')
 
--- Noclip label
 noclipTab:Label("Noclip", Color3.fromRGB(255, 255, 255))
 
--- Noclip toggle
 local noclipToggle = false
 noclipTab:Toggle('Enable Noclip', false, function(state)
     noclipToggle = state
@@ -65,7 +54,6 @@ noclipTab:Toggle('Enable Noclip', false, function(state)
         local player = game.Players.LocalPlayer
         local character = player.Character or player.CharacterAdded:Wait()
 
-        -- Noclip function
         local function noclip()
             for _, v in pairs(character:GetDescendants()) do
                 if v:IsA("BasePart") and v.CanCollide == true then
@@ -74,10 +62,8 @@ noclipTab:Toggle('Enable Noclip', false, function(state)
             end
         end
 
-        -- Initial noclip
         noclip()
 
-        -- Reapply noclip every 0.001 seconds
         game:GetService("RunService").Stepped:Connect(function()
             if not noclipToggle then return end
             if player.Character ~= character then
@@ -104,23 +90,18 @@ noclipTab:Toggle('Enable Noclip', false, function(state)
     end
 end)
 
--- Creating a new tab for Others
 local othersTab = window:Tab('Others')
 
--- Inf Yield button
 othersTab:Button("Inf Yield", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()  -- Load Infinite Yield
 end)
 
--- Creating a new tab for Discord
 local discordTab = window:Tab('Discord')
 
--- Discord label
 discordTab:Label("Join our Discord:", Color3.fromRGB(255, 255, 255))
 
--- Copy link button
 discordTab:Button("Copy Discord Link", function()
-    setclipboard("https://discord.gg/4Gq4585R7n")  -- Copies the Discord link to the clipboard
+    setclipboard("https://discord.gg/4Gq4585R7n")  
     game.StarterGui:SetCore("SendNotification", {
         Title = "Discord Link Copied",
         Text = "The Discord link has been copied to your clipboard!",
