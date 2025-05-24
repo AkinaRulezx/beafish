@@ -101,7 +101,7 @@ local discordTab = window:Tab('Discord')
 discordTab:Label("Join our Discord:", Color3.fromRGB(255, 255, 255))
 
 discordTab:Button("Copy Discord Link", function()
-    setclipboard("https://discord.gg/4Gq4585R7n")  
+    setclipboard("https://discord.gg/nxdvUxsbSf")  
     game.StarterGui:SetCore("SendNotification", {
         Title = "Discord Link Copied",
         Text = "The Discord link has been copied to your clipboard!",
