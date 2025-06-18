@@ -1,13 +1,1 @@
-local success, err = pcall(function()
-    local uiScript = loadstring(game:HttpGet('https://raw.githubusercontent.com/AkinaRulezx/beafish/main/main%20script', true))()
-    
-    if not uiScript then
-        error("Failed to load the UI script")
-    end
-  
-    uiScript()
-end)
-
-if not success then
-    warn("Error loading script: " .. tostring(err))
-end
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AkinaRulezx/beafish/main/main%20script", true))()
